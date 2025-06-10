@@ -1,100 +1,78 @@
-Program 5: Java Standalone Application with MySQL (CRUD Operations)
+Program 16 – Django TODO App
 
-Objective
+AIM  
+To develop a TODO list application backend using Django, allowing users to add, view, and manage tasks with a clean and functional web interface.
 
-This project is a Java Standalone Application that connects to a MySQL database and performs CRUD (Create, Read, Update, Delete) operations on a product table. It's designed to demonstrate Java-Database connectivity using JDBC.
+DESCRIPTION  
+This experiment demonstrates how to build a server-rendered TODO application using Django. The app allows users to manage tasks—such as adding new tasks and viewing task lists—using Django’s powerful Model-View-Template (MVT) architecture. It showcases key Django concepts like models, views, templates, forms, and URL routing. This project is ideal for beginners to learn about Django’s ORM, template rendering, and basic backend development.
 
-Prerequisites 
+PROJECT STRUCTURE  
 
-Before running this application, make sure you have the following installed:
+django_todo_app/
+│
+├── todo_project/ # Project settings folder
+│ ├── init.py
+│ ├── settings.py # Project configuration
+│ ├── urls.py # Root URL configuration
+│ └── wsgi.py # WSGI entry point
+│
+├── todo/ # Main app folder
+│ ├── migrations/
+│ ├── templates/
+│ │ └── todo/
+│ │ └── index.html # HTML template for the app
+│ ├── init.py
+│ ├── admin.py # Admin interface
+│ ├── apps.py
+│ ├── models.py # Task model
+│ ├── views.py # Logic for handling requests
+│ └── urls.py # URL routing for app
+│
+├── db.sqlite3 # SQLite database
+├── manage.py # Django management script
+└── README.md # Project documentation
 
-1.	MySQL Server– Ensure MySQL is installed and running.
-2.	MySQL Workbench – Optional, for GUI-based database management.
-3.	Java Development Kit (JDK) – Java 8 or later.
-4.	VS Code / IntelliJ / Eclipse – Any IDE that supports Java.
-5.	MySQL Connector/J (JDBC Driver) – Required for Java-MySQL connectivity.
-  
+ 
+ 
+INSTALLATION & SETUP PREREQUISITES  
+•	Python 3.8+  
+•	pip (Python package installer)  
+•	VS Code or any code editor  
+•	Basic knowledge of Django  
 
-Installation & Setup
-Step 1: Install Required Software
-•	Download and install MySQL Server: [https://dev.mysql.com/downloads/mysql/](https://dev.mysql.com/downloads/mysql/)
-•	Install MySQL Workbench (Optional): [https://dev.mysql.com/downloads/workbench/](https://dev.mysql.com/downloads/workbench/)
-•	Install JDK: [https://www.oracle.com/java/technologies/javase-downloads.html](https://www.oracle.com/java/technologies/javase-downloads.html)
-•	Install VS Code: [https://code.visualstudio.com/](https://code.visualstudio.com/)
-•	Download MySQL Connector/J: [https://dev.mysql.com/downloads/connector/j/](https://dev.mysql.com/downloads/connector/j/)
+STEPS TO RUN THE PROJECT  
+1.Create Project and App
+django-admin startproject todo_project  
+cd todo_project  
+python manage.py startapp todo  
 
-Step 2: Configure MySQL Database
+2.Define Model in todo/models.py
+from django.db import models
 
-Use MySQL Workbench or terminal to set up the database.
-CREATE DATABASE shoppingdb;
+class Task(models.Model):
+    title = models.CharField(max_length=200)
+    completed = models.BooleanField(default=False)
 
-USE shoppingdb;
+    def __str__(self):
+        return self.title
 
-CREATE TABLE products (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
-    price DOUBLE NOT NULL,
-    quantity INT NOT NULL
-    );
+3.Create and Apply Migrations
+python manage.py makemigrations  
+python manage.py migrate
 
-Step 3: Set Up Java Project
-1.	Create a folder structure:
-java-crud-app/
-├── src/
-│   └── Main.java
-├── lib/
-│   └── mysql-connector-j-<version>.jar
-└── bin/
+4.Set Up Views, Templates, and URLs
+In views.py, write logic to render tasks.
+Create templates/todo/index.html.
 
-2.	Load JDBC Driver in Java:
-Class.forName("com.mysql.cj.jdbc.Driver");
+Map URLs in todo/urls.py and include in todo_project/urls.py.
 
-3.	Include MySQL Connector/J in the classpath when compiling and running:
-javac -cp ".;lib/mysql-connector-j-9.3.0.jar" -d bin src/Main.java
-java -cp ".;bin;lib/mysql-connector-j-9.3.0.jar" Main
+5.Run the Project
+python manage.py runserver
 
-Step 4: Implement CRUD Operations
-•	Create – Insert new product
-•	Read – View all products
-•	Update – Modify product details
-•	Delete – Remove product
+6.Visit in Browser
+Open your browser and go to:
+http://127.0.0.1:8000/
 
-Sample Java Code – Database Connection
-import java.sql.*;
 
-public class DatabaseConnection {
-    public static void main(String[] args) {
-        String url = "jdbc:mysql://localhost:3306/crud_db";
-        String user = "root";
-        String password = "your_password";
-
-        try {
-            Connection conn = DriverManager.getConnection(url, user, password);
-            System.out.println("Connected to MySQL successfully!");
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-}
-
-Step 5: Running the Application
-1.	Compile:
-javac -cp ".;lib/mysql-connector-j-9.3.0.jar" -d bin src/Main.java
-
-2.	Run:
-java -cp ".;bin;lib/mysql-connector-j-9.3.0.jar" Main
-
-3.	If successful, you'll see:
---- Product Management ---
-1. Add Product
-2. View All Products
-3. Update Product
-4. Delete Product
-5. Exit
-
-Contributing
-Feel free to fork this repository and suggest improvements via pull requests. All contributions are welcome!
-
-License
-This project is open-source and available under the MIT License
+LICENSE
+This project is licensed under the MIT License.
